@@ -6,8 +6,17 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CheeseListingRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+// Collections operations: operaciones sobre multiples representaciones de la clase
+// Item operations: operaciones sobre una representacion de la clase
+
 /**
  * @ApiResource(
+ *  collectionOperations={"get", "post"},
+ *  itemOperations={
+ *      "get"={"path"="/i<3cheese/{id}"}, 
+ *      "put"
+ *  },
+ *  shortName="cheeses"
  * )
  * @ORM\Entity(repositoryClass=CheeseListingRepository::class)
  */
