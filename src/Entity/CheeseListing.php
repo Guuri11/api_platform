@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 
 // Collections operations: operaciones sobre multiples representaciones de la clase
 // Item operations: operaciones sobre una representacion de la clase
@@ -36,6 +38,11 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  * @ORM\Entity(repositoryClass=CheeseListingRepository::class)
  * @ApiFilter(BooleanFilter::class, properties={"is_published"})
  * @ApiFilter(SearchFilter::class, properties={"title":"partial", "getDescription": "partial"})
+ * @ApiFilter(RangeFilter::class, properties={"price"})
+ * @ApiFilter(PropertyFilter::class)
+ * 
+ * Ejemplo de property filter: /api/cheeses/1.jsonld?properties[]=title&properties[]=description
+ * 
  */
 class CheeseListing
 {
@@ -95,6 +102,14 @@ class CheeseListing
     public function getDescription(): ?string
     {
         return $this->description;
+    }
+
+    /**
+     * @Groups({"cheese_listing:read"})
+     */
+    public function getShortDescription(): ?string
+    {
+        return strlen($this->description) < 40 ? $this->description: substr($this->description,0, 40).'...' ;
     }
 
     /**
