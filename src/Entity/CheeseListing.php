@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\CheeseListingRepository;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Carbon\Carbon;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
@@ -70,9 +71,10 @@ class CheeseListing
      */
     private $is_published = false;
 
-    public function __construct()
+    public function __construct(string $title = null)
     {
         $this->create_at = new DateTimeImmutable();
+        $this->title = $title;
     }
 
     public function getId(): ?int
@@ -85,31 +87,15 @@ class CheeseListing
         return $this->title;
     }
 
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function setDescription(string $description): self
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
     /**
-     * The description of a cheese
-     * 
-     * @Groups({"cheese_listing:write"})
+     * @SerializedName("custom_description")
      */
-    public function setTextDescription(string $description): self
+    public function setDescription(string $description): self
     {
         $this->description = nl2br($description);
 
