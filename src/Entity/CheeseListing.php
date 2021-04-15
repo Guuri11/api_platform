@@ -36,7 +36,8 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *  shortName="cheeses",
  *  attributes={
  *      "pagination_items_per_page"=3
- *  }
+ *  },
+ *  formats={"jsonld", "json", "html", "jsonhal", "csv"={"text/csv"}}
  * )
  * @ORM\Entity(repositoryClass=CheeseListingRepository::class)
  * @ApiFilter(BooleanFilter::class, properties={"is_published"})
