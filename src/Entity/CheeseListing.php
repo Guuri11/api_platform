@@ -9,6 +9,9 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 use Carbon\Carbon;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 // Collections operations: operaciones sobre multiples representaciones de la clase
 // Item operations: operaciones sobre una representacion de la clase
@@ -31,6 +34,8 @@ use Doctrine\ORM\Mapping as ORM;
  *  shortName="cheeses"
  * )
  * @ORM\Entity(repositoryClass=CheeseListingRepository::class)
+ * @ApiFilter(BooleanFilter::class, properties={"is_published"})
+ * @ApiFilter(SearchFilter::class, properties={"title":"partial", "getDescription": "partial"})
  */
 class CheeseListing
 {
