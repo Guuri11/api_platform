@@ -103,6 +103,7 @@ class CheeseListing
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"cheese_listing:read", "cheese_listing:write"})
      * Uses his IRI
+     * @Assert\Valid()
      */
     private $owner;
 
