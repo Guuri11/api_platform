@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -59,6 +61,17 @@ class User implements UserInterface
      * @Assert\NotBlank()
      */
     private $username;
+
+    /**
+     * @ORM\OneToMany(targetEntity=CheeseListing::class, mappedBy="owner")
+     * @Groups({"user:read"})
+     */
+    private $cheeseListings;
+
+    public function __construct()
+    {
+        $this->cheeseListings = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -144,6 +157,36 @@ class User implements UserInterface
     public function setUsername(string $username): self
     {
         $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CheeseListing[]
+     */
+    public function getCheeseListings(): Collection
+    {
+        return $this->cheeseListings;
+    }
+
+    public function addCheeseListing(CheeseListing $cheeseListing): self
+    {
+        if (!$this->cheeseListings->contains($cheeseListing)) {
+            $this->cheeseListings[] = $cheeseListing;
+            $cheeseListing->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCheeseListing(CheeseListing $cheeseListing): self
+    {
+        if ($this->cheeseListings->removeElement($cheeseListing)) {
+            // set the owning side to null (unless already changed)
+            if ($cheeseListing->getOwner() === $this) {
+                $cheeseListing->setOwner(null);
+            }
+        }
 
         return $this;
     }
