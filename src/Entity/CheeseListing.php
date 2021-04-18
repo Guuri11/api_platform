@@ -14,6 +14,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
+use Symfony\Component\Validator\Constraints as Assert;
 
 // Collections operations: operaciones sobre multiples representaciones de la clase
 // Item operations: operaciones sobre una representacion de la clase
@@ -60,12 +61,20 @@ class CheeseListing
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"cheese_listing:read", "cheese_listing:write"})
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *  min=2,
+     *  max=50,
+     *  maxMessage="Max length is 50",
+     *  minMessage="Min length is 2",
+     * )
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
      * @Groups({"cheese_listing:read", "cheese_listing:write"})
+     * @Assert\NotBlank()
      */
     private $description;
 
